@@ -1,0 +1,10 @@
+cats:
+  Dogs: [hello, 3]
+  love: 1.9
+  cat: ["181234", asdjf, fajsldjf
+        234234,asdf,d, 1]
+  whattt: "This is a super duper long
+           string that is mutiline
+           yesasdfasdfasfasdfasdfasdf"
+what:
+  Dog: 1
