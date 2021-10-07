@@ -7,6 +7,7 @@ const int STRING_LENGTH = 1024;
 
 struct TypeNode
 {
+  // Node
   int type = 0;
   
   // Scalar
@@ -23,7 +24,7 @@ struct TypeNode
   TypeNode *node = NULL;
   TypeNode *next_listitem = NULL;
   
-  // utlities
+  // Utlities
   bool IsMap(){return type == 1;}
   bool IsSequence(){return type == 2;}
   bool IsScalar(){return type == 3;}
@@ -97,6 +98,46 @@ void read_value(YAML::Node node, TypeNode *&mynode)
     
 }
 
+void destroy(TypeNode *&node)
+{
+  if (node->IsMap()){
+    TypeNode *pair;
+    TypeNode *next;
+    pair = node->first_keyvaluepair;    
+    while (pair){
+      next = pair->next_keyvaluepair;
+      destroy(pair->value);
+      delete[] pair->key;
+      delete pair->value;
+      delete pair;
+      pair = next;
+    }
+    node->first_keyvaluepair = NULL;
+  }
+  else if (node->IsSequence()){
+    TypeNode *item;
+    TypeNode *next;
+    item = node->first_listitem;
+    while (item){
+      next = item->next_listitem;
+      destroy(item->node);
+      delete item->node;
+      delete item;
+      item = next;
+    }
+    node->first_listitem = NULL;
+  }
+  else if (node->IsScalar()){
+    delete[] node->string;
+    delete node;
+    node = NULL;
+  }
+  else if (node->IsNull()){
+    delete node;
+    node = NULL;
+  }
+}
+
 
 void dump(TypeNode *&node)
 {
@@ -129,12 +170,19 @@ void dump(TypeNode *&node)
 extern "C"
 {
 
-TypeNode* LoadFile_c()
+TypeNode* LoadFile_c(char* filename)
 {
-  YAML::Node file = YAML::LoadFile("../test.yaml");
+  YAML::Node file = YAML::LoadFile(filename);
   TypeNode *root;
   read_value(file, root);
   return root;
+}
+
+void DestroyNode(TypeNode *&root)
+{
+  destroy(root);
+  delete root;
+  root = NULL;
 }
 
 }
