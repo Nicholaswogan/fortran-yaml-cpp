@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.4)
-project(test CXX)
+project(fortran-yaml-cpp VERSION 0.0.1 LANGUAGES CXX Fortran)
 add_subdirectory(yaml-cpp)
-enable_language(Fortran)
 
 set(CMAKE_CXX_STANDARD 11)
 
