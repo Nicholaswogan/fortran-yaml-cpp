@@ -31,7 +31,7 @@ struct TypeNode
   bool IsNull(){return type == 4;}
 };
 
-void read_value(YAML::Node node, TypeNode *&mynode)
+void read_value(YAML::Node &node, TypeNode *&mynode)
 {  
   if (node.IsMap()){
     mynode = new TypeNode;
@@ -49,7 +49,7 @@ void read_value(YAML::Node node, TypeNode *&mynode)
       keyvaluepair->key = new char[STRING_LENGTH]();
       // keyvaluepair->key = "";
       strcpy(keyvaluepair->key, key.c_str());
-      
+      std::fill(keyvaluepair->key + key.size(),keyvaluepair->key + STRING_LENGTH,' ');
       // read the corresponing value of the key value pair
       read_value(value, keyvaluepair->value);
       
@@ -79,16 +79,14 @@ void read_value(YAML::Node node, TypeNode *&mynode)
       }
     }
   }
-  else if (node.IsScalar()){
-    // std::cout << "it is a scalar = " << node.as<std::string>() << std::endl;
-    
-    // allocate sclar and set string
+  else if (node.IsScalar()){    
+    // allocate scalar and set string
     mynode = new TypeNode;
     mynode->type = 3;
     mynode->string = new char[STRING_LENGTH]();
-    // mynode->string = "";
-    strcpy(mynode->string, node.as<std::string>().c_str());
-    
+    std::string str = node.as<std::string>();
+    strcpy(mynode->string, str.c_str());
+    std::fill(mynode->string + str.size(),mynode->string + STRING_LENGTH,' ');
   }
   else if (node.IsNull()){
     // std::cout << "it is a null" << std::endl;
@@ -170,12 +168,35 @@ void dump(TypeNode *&node)
 extern "C"
 {
 
-TypeNode* LoadFile_c(char* filename)
+void LoadFile_c(char *filename, TypeNode *&root, char *error_message)
 {
-  YAML::Node file = YAML::LoadFile(filename);
-  TypeNode *root;
+  YAML::Node file;
+  std::string error;
+  root = NULL;
+  try{
+    file = YAML::LoadFile(filename);
+  }
+  catch (YAML::BadFile e){
+    error = e.msg;
+    strcpy(error_message, error.c_str());
+    std::fill(error_message + error.size(), error_message+STRING_LENGTH,' ');
+    
+    // std::cin.get();
+    return;
+  }
+  catch (YAML::ParserException e){
+    error = "yaml-cpp: error at line " + std::to_string(e.mark.line + 1) + ", column "
+            + std::to_string(e.mark.column + 1) + ": " + e.msg;
+    strcpy(error_message, error.c_str());
+    std::fill(error_message + error.size(), error_message+STRING_LENGTH,' ');
+    
+    // std::cin.get();
+    return;
+  }
+  
+  std::fill(error_message, error_message+STRING_LENGTH,' ');
   read_value(file, root);
-  return root;
+  return;
 }
 
 void DestroyNode(TypeNode *&root)

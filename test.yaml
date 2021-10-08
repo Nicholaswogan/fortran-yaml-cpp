@@ -1,10 +1,16 @@
-cats:
-  Dogs: [hello, 3]
-  love: 1.9
-  cat: ["181234", asdjf, fajsldjf
-        234234,asdf,d, 1]
-  whattt: "This is a super duper long
-           string that is mutiline
-           yesasdfasdfasfasdfasdfasdf"
-what:
-  Dog: 1
+pi: 3.14159
+happy-today: true
+groceries: [eggs, butter, oil, bread]
+to-do:
+  - run a mile
+  - go fishing
+  - study:
+    - for the test
+    - for the other test
+reaction:
+  equation: H2CO + OH <=> HCO + H2O
+  rate-constant: {A: 5.7e-15, b: 1.18, Ea: -225.0}
+note: this is a note
+long-note: this is a really long not
+           that goes for a few lines
+           ya.
