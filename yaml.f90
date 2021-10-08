@@ -122,7 +122,13 @@ contains
     type(c_ptr) :: root_c
     
     nullify(root)
-    root_c = LoadFile(path, error)
+    
+    if (len_trim(path) >= string_length) then
+      error = "The path can not be longer than 1024 characters."
+      return
+    endif
+    
+    root_c = LoadFile(trim(path), error)
     if (c_associated(root_c)) then
       call read_value(root_c, root)
       call root%set_path(path)
