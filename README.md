@@ -6,13 +6,19 @@ This package uses the C++ package [yaml-cpp](https://github.com/jbeder/yaml-cpp)
 
 ## Building
 
-To build and run the example and test, use `cmake`. From the root directory of `fortran-yaml-cpp`, run the following commands:
+First, clone this repository
+
+```
+git clone --recursive https://github.com/Nicholaswogan/fortran-yaml-cpp.git
+```
+
+Next, navigate to the root directory of `fortran-yaml-cpp`. Finally, run the following commands to build with `cmake` and run the test and example.
 
 ```
 mkdir build
 cd build
 cmake ..
 make
-./test
+./test_yaml
 ./example
 ```
