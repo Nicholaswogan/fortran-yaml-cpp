@@ -1,6 +1,6 @@
-# fortran-yaml-cpp
+# **NOTE: Use [fortran-yaml-c](https://github.com/Nicholaswogan/fortran-yaml-c) instead. I am not longer maintaining this project.**
 
-**NOTE: Use [fortran-yaml-c](https://github.com/Nicholaswogan/fortran-yaml-c) instead. I am not longer maintaining this project.**
+# fortran-yaml-cpp
 
 This is [YAML](http://yaml.org) parser for Fortran matching the [YAML 1.2 spec](https://yaml.org/spec/1.2.2/).
 
